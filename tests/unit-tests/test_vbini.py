@@ -26,6 +26,12 @@ class TestIni(unittest.TestCase):
         ini_file = Ini()
         ini_file['test'] = 'wizard'
 
+    def test_add_setting_with_section(self):
+        ini_file = Ini()
+        ini_file['test'] = ('people', 'wizard')
+        self.assertEqual(ini_file['test'], 'wizard')
+        self.assertEqual(ini_file.get_setting_section('test'), 'people')
+
     def test_add_setting_with_key_type_error(self):
         ini_file = Ini()
         with self.assertRaises(TypeError):
@@ -35,6 +41,11 @@ class TestIni(unittest.TestCase):
         ini_file = Ini()
         ini_file['test'] = 'wizard'
         self.assertEqual(ini_file['test'], 'wizard')
+
+    def test_get_setting_section(self):
+        ini_file = Ini()
+        ini_file['test'] = ['magicPeople', 'wizard']
+        self.assertEqual(ini_file.get_setting_section('test'), 'magicPeople')
 
     def test_get_setting_key_error(self):
         ini_file = Ini()
