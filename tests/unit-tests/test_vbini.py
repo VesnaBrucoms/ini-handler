@@ -69,9 +69,9 @@ class TestIni(unittest.TestCase):
         ini_file = Ini()
         ini_file.load()
         result = {}
-        result['test'] = 'wizard'
-        result['castSpell'] = True
-        result['punch'] = 1
+        result['test'] = [None, 'wizard']
+        result['castSpell'] = [None, True]
+        result['punch'] = [None, 1]
 
         self.assertEqual(ini_file._settings, result)
 

@@ -8,6 +8,7 @@ class Ini(object):
 
     def __init__(self, filename='settings', directory=None):
         self._settings = {}
+        self._sections = set()
 
         if filename.endswith('.ini'):
             self._filename = filename[:-4]
@@ -24,8 +25,7 @@ class Ini(object):
         self._filepath = self._join_path()
 
     def __delitem__(self, key):
-        if not type(key) == str:
-            raise TypeError('Key must be of type string')
+        self._validate_key_type(key)
 
         try:
             self._settings.pop(key)
@@ -33,11 +33,10 @@ class Ini(object):
             raise KeyError('{} not found'.format(key))
 
     def __getitem__(self, key):
-        if not type(key) == str:
-            raise TypeError('Key must be of type string')
+        self._validate_key_type(key)
 
         try:
-            return self._settings[key]
+            return self._settings[key][1]
         except KeyError:
             raise KeyError('{} not found'.format(key))
 
@@ -48,10 +47,14 @@ class Ini(object):
         return len(self._settings)
 
     def __setitem__(self, key, value):
-        if not type(key) == str:
-            raise TypeError('Key must be of type string')
+        self._validate_key_type(key)
 
-        self._settings[key] = value
+        if type(value) in [list, tuple, set]:
+            self._settings[key] = [value[0], value[1]]
+        elif key in self._settings:
+            self._settings[key] = [self._settings[key][0], value]
+        else:
+            self._settings[key] = [None, value]
 
     def __str__(self):
         return self._filepath
@@ -68,6 +71,9 @@ class Ini(object):
     def filepath(self):
         return self._filepath
 
+    def get_setting_section(self, key):
+        self._validate_key_type(key)
+
     def load(self):
         with open(self._filepath, 'rt') as ini_file:
             for line in ini_file:
@@ -79,6 +85,10 @@ class Ini(object):
         with open(self._filepath, 'wt') as ini_file:
             for key in self._settings:
                 ini_file.write('{}={}\n'.format(key, str(self._settings[key])))
+
+    def _validate_key_type(self, key):
+        if not type(key) == str:
+            raise TypeError('Key must be of type string')
 
     def _join_path(self):
         if sys.platform == 'win32':

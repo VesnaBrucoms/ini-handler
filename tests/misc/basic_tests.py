@@ -16,12 +16,17 @@ if __name__ == '__main__':
     print('')
     print('Items:', len(ini_file))
     print('Item 1:', ini_file['testKey'])
+    ini_file['testKey'] = 'new'
+    print('Item 1 change:', ini_file['testKey'])
+    print('Items:', len(ini_file))
 
     # del ini_file['testKey']
     # print('')
     # print('Items:', len(ini_file))
     # del ini_file['testKey']
 
+    print('')
+    print('')
     ini2 = Ini(filename='testing.ini')
     print(ini2.filename)
     print(ini2)
