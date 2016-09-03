@@ -6,7 +6,7 @@ setup(name='Ini Handler',
       description='Ini file handler',
       author='Trevalyan Stevens',
       author_email='etstevens60@gmail.com',
-      url='http://www.kerneweksoftware.com/software/',
+      url='http://www.kerneweksoftware.com/software.html',
       packages=['ini_handler'],
       classifiers=[
                    'Programming Language :: Python',
