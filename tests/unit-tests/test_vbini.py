@@ -1,6 +1,12 @@
 """Unittests for the vbini.py module"""
+import functools
+import re
 import unittest
+from unittest import mock
 from ini_handler.vbini import Ini
+
+
+mock_ini_data = 'test=wizard\ncastSpell=True\npunch=1\n'
 
 
 class TestIni(unittest.TestCase):
@@ -44,6 +50,36 @@ class TestIni(unittest.TestCase):
         ini_file['test'] = 'wizard'
         ini_file['castSpell'] = True
         self.assertEqual(len(ini_file), 2)
+
+    @mock.patch('builtins.open')
+    def test_load(self, open_mock):
+        context_manager_mock = mock.Mock()
+        open_mock.return_value = context_manager_mock
+        file_mock = mock.Mock()
+        iter_mock = mock.Mock()
+        iter_mock.return_value = iter(self._split_but_keep_seperated(mock_ini_data,
+                                                                     '\n'))
+        enter_mock = mock.Mock()
+        enter_mock.return_value = file_mock
+        exit_mock = mock.Mock()
+        setattr(context_manager_mock, '__enter__', enter_mock)
+        setattr(context_manager_mock, '__exit__', exit_mock)
+        setattr(file_mock, '__iter__', iter_mock)
+
+        ini_file = Ini()
+        ini_file.load()
+        result = {}
+        result['test'] = 'wizard'
+        result['castSpell'] = True
+        result['punch'] = 1
+
+        self.assertEqual(ini_file._settings, result)
+
+    def _split_but_keep_seperated(self, s, sep):
+        return functools.reduce(lambda acc,
+                                i: acc[:-1] + [acc[-1] + i] if i == sep else acc + [i],
+                                re.split("(%s)" % re.escape(sep), s),
+                                [])
 
 if __name__ == '__main__':
     unittest.main()
