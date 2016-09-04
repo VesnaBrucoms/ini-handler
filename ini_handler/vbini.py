@@ -8,6 +8,9 @@ from ini_handler.utilities import validate_key_type
 
 
 class Ini(object):
+    """Representation of the ini file.
+
+    Stores all settings and sections; handles all loading and saving."""
 
     def __init__(self, filename='settings', directory=None):
         self._settings = {}
@@ -55,7 +58,8 @@ class Ini(object):
 
         if type(value) in [list, tuple, set]:
             self._settings[key] = [value[0], value[1]]
-            self._sections[value[0]] = key
+            if value[0] is not None:
+                self._sections[value[0]] = key
         elif key in self._settings:
             self._settings[key] = [self._settings[key][0], value]
         else:
@@ -77,21 +81,39 @@ class Ini(object):
         return self._filepath
 
     def get_setting_section(self, key):
+        """Returns the section the setting is assigned to.
+
+        Args:
+            key(str):   setting key
+        """
         validate_key_type(key)
 
         return self._settings[key][0]
 
     def set_setting_section(self, key, section):
+        """Sets the section the setting is assigned to.
+
+        Args:
+            key(str):       setting key
+            section(str):   section name
+        """
         validate_key_type(key)
 
         self[key] = [section, self[key]]
 
     def load(self):
         with open(self._filepath, 'rt') as ini_file:
+            current_section = None
             for line in ini_file:
+                if line == '\n':
+                    continue
+                if line.startswith('[') and line[:-1].endswith(']'):
+                    current_section = line[1:-2]
+                    continue
+
                 line = line[:-1].split('=')
                 line[1] = self._check_and_convert_type(line[1])
-                self[line[0]] = line[1]
+                self[line[0]] = [current_section, line[1]]
 
     def save(self):
         with open(self._filepath, 'wt') as ini_file:

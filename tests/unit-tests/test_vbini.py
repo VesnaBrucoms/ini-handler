@@ -6,7 +6,7 @@ from unittest import mock
 from ini_handler.vbini import Ini
 
 
-mock_ini_data = 'test=wizard\ncastSpell=True\npunch=1\n'
+mock_ini_data = 'test=wizard\ncastSpell=True\npunch=1\n\n[section]\nghost=False\n'
 
 
 class TestIni(unittest.TestCase):
@@ -83,8 +83,13 @@ class TestIni(unittest.TestCase):
         result['test'] = [None, 'wizard']
         result['castSpell'] = [None, True]
         result['punch'] = [None, 1]
+        result['ghost'] = ['section', False]
+        result_sections = {}
+        result_sections['section'] = set()
+        result_sections['section'].add('ghost')
 
         self.assertEqual(ini_file._settings, result)
+        self.assertEqual(ini_file._sections._sections, result_sections)
 
     def _split_but_keep_seperated(self, s, sep):
         return functools.reduce(lambda acc,

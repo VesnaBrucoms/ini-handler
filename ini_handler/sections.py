@@ -37,7 +37,7 @@ class Sections(object):
             self._sections[key] = new_set
 
     def __str__(self):
-        return str(len(self))
+        return str(self._sections)
 
     def remove_setting(self, key, value):
         if value is not None:
