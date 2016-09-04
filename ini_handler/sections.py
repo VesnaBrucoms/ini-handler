@@ -16,8 +16,8 @@ class Sections(object):
             raise KeyError('{} not found'.format(key))
 
     def __iter__(self):
-        #yield
-        pass
+        for key in self._sections:
+            yield key
 
     def __len__(self):
         return len(self._sections)
@@ -35,6 +35,9 @@ class Sections(object):
             new_set = set()
             new_set.add(value)
             self._sections[key] = new_set
+
+    def __str__(self):
+        return str(len(self))
 
     def remove_setting(self, key, value):
         if value is not None:

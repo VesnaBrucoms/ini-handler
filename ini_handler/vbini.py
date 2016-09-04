@@ -96,7 +96,15 @@ class Ini(object):
     def save(self):
         with open(self._filepath, 'wt') as ini_file:
             for key in self._settings:
-                ini_file.write('{}={}\n'.format(key, str(self._settings[key])))
+                if self.get_setting_section(key) is None:
+                    ini_file.write('{}={}\n'.format(key, str(self[key])))
+
+            for section in self._sections:
+                ini_file.write('\n')
+                ini_file.write('[{}]\n'.format(section))
+                for setting_key in self._sections[section]:
+                    ini_file.write('{}={}\n'.format(setting_key,
+                                                    str(self[setting_key])))
 
     def _join_path(self):
         if sys.platform == 'win32':
