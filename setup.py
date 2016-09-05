@@ -2,7 +2,7 @@
 from distutils.core import setup
 
 setup(name='Ini Handler',
-      version='0.1',
+      version='0.3.1',
       description='Ini file handler',
       author='Trevalyan Stevens',
       author_email='etstevens60@gmail.com',

@@ -6,7 +6,7 @@ from unittest import mock
 from ini_handler.vbini import Ini
 
 
-mock_ini_data = 'test=wizard\ncastSpell=True\npunch=1\n'
+mock_ini_data = 'test=wizard\ncastSpell=True\npunch=1\n\n[section]\nghost=False\n'
 
 
 class TestIni(unittest.TestCase):
@@ -26,6 +26,12 @@ class TestIni(unittest.TestCase):
         ini_file = Ini()
         ini_file['test'] = 'wizard'
 
+    def test_add_setting_with_section(self):
+        ini_file = Ini()
+        ini_file['test'] = ('people', 'wizard')
+        self.assertEqual(ini_file['test'], 'wizard')
+        self.assertEqual(ini_file.get_setting_section('test'), 'people')
+
     def test_add_setting_with_key_type_error(self):
         ini_file = Ini()
         with self.assertRaises(TypeError):
@@ -35,6 +41,11 @@ class TestIni(unittest.TestCase):
         ini_file = Ini()
         ini_file['test'] = 'wizard'
         self.assertEqual(ini_file['test'], 'wizard')
+
+    def test_get_setting_section(self):
+        ini_file = Ini()
+        ini_file['test'] = ['magicPeople', 'wizard']
+        self.assertEqual(ini_file.get_setting_section('test'), 'magicPeople')
 
     def test_get_setting_key_error(self):
         ini_file = Ini()
@@ -69,11 +80,16 @@ class TestIni(unittest.TestCase):
         ini_file = Ini()
         ini_file.load()
         result = {}
-        result['test'] = 'wizard'
-        result['castSpell'] = True
-        result['punch'] = 1
+        result['test'] = [None, 'wizard']
+        result['castSpell'] = [None, True]
+        result['punch'] = [None, 1]
+        result['ghost'] = ['section', False]
+        result_sections = {}
+        result_sections['section'] = set()
+        result_sections['section'].add('ghost')
 
         self.assertEqual(ini_file._settings, result)
+        self.assertEqual(ini_file._sections._sections, result_sections)
 
     def _split_but_keep_seperated(self, s, sep):
         return functools.reduce(lambda acc,

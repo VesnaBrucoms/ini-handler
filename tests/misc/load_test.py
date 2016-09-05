@@ -5,4 +5,5 @@ if __name__ == '__main__':
     ini_file = Ini()
     ini_file.load()
     print(ini_file._settings)
-    print(ini_file['testKey'])
+    print(ini_file._sections)
+    print(ini_file['test'])
