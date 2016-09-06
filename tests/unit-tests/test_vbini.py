@@ -62,6 +62,23 @@ class TestIni(unittest.TestCase):
         ini_file['castSpell'] = True
         self.assertEqual(len(ini_file), 2)
 
+    def test_iteration(self):
+        ini_file = Ini()
+        ini_file['set1'] = 'data'
+        ini_file['set2'] = 'great'
+        ini_file['set3'] = 'help'
+        ini_file['set4'] = 'info'
+        ini_file['bob'] = ['wizards', True]
+
+        settings_list = {}
+        for setting in ini_file:
+            settings_list[setting[0]] = setting[1]
+
+        expected_result = dict([('set1', 'data'), ('set2', 'great'),
+                                ('set3', 'help'), ('set4', 'info'),
+                                ('bob', True)])
+        self.assertEqual(settings_list, expected_result)
+
     @mock.patch('builtins.open')
     def test_load(self, open_mock):
         context_manager_mock = mock.Mock()

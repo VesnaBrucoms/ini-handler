@@ -1,4 +1,4 @@
-"""A collection of regularly used functions"""
+""" A collection of regularly used functions """
 
 
 def validate_key_type(key):

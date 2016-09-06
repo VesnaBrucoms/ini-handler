@@ -1,4 +1,4 @@
-"""Ini Handler Sections object"""
+""" Ini Handler Sections object """
 from ini_handler.utilities import validate_key_type
 
 
