@@ -8,7 +8,9 @@ from ini_handler.utilities import validate_key_type
 
 
 class Ini(object):
-    """Representation of the ini file.
+    """Ini(filename, directory)
+
+    Representation of the ini file.
 
     Stores all settings and sections; handles all loading and saving.
     """
