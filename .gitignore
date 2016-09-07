@@ -3,3 +3,8 @@
 /dist
 .pyc
 MANIFEST
+.coverage
+/ini_handler/__pycache__
+/tests/misc/__pycache__
+/tests/unit-tests/__pycache__
+/docs/_build
