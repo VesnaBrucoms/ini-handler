@@ -1,10 +1,13 @@
 /.git
 /build
 /dist
-.pyc
-MANIFEST
-.coverage
+/release
+
+/docs/_build
 /ini_handler/__pycache__
 /tests/misc/__pycache__
 /tests/unit-tests/__pycache__
-/docs/_build
+
+.coverage
+.pyc
+MANIFEST

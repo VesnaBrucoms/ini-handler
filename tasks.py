@@ -14,7 +14,7 @@ def build_docs(ctx):
     print('Building documentation...')
     ctx.run('make clean')
     ctx.run('make html')
-    ctx.run('sphinx-apidoc -o ./_build ../ini_handler')
+    ctx.run('sphinx-apidoc -o ../release ../ini_handler')
     print('Complete')
 
 
