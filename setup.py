@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 from distutils.core import setup
-from ini_handler.__init__ import library_details
+from ini_handler.__init__ import __release__
 
 setup(name='Ini Handler',
-      version=library_details['version'],
+      version=__release__,
       description='An easy to use ini file handler library',
       author='Trevalyan Stevens',
       author_email='etstevens60@gmail.com',
