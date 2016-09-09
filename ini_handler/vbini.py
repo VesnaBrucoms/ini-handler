@@ -1,4 +1,4 @@
-"""Ini Handler Ini object"""
+""" Ini Handler main Ini object """
 import re
 import sys
 import os
@@ -8,9 +8,12 @@ from ini_handler.utilities import validate_key_type
 
 
 class Ini(object):
-    """Representation of the ini file.
+    """Ini(filename, directory)
 
-    Stores all settings and sections; handles all loading and saving."""
+    Representation of the ini file.
+
+    Stores all settings and sections; handles all loading and saving.
+    """
 
     def __init__(self, filename='settings', directory=None):
         self._settings = {}
@@ -48,7 +51,8 @@ class Ini(object):
             raise KeyError('{} not found'.format(key))
 
     def __iter__(self):
-        pass
+        for key in self._settings:
+            yield (key, self[key])
 
     def __len__(self):
         return len(self._settings)
@@ -70,14 +74,17 @@ class Ini(object):
 
     @property
     def filename(self):
+        """The .ini filename (no extension)."""
         return self._filename
 
     @property
     def directory(self):
+        """The path to which the .ini file will be written to (no filename)."""
         return self._directory
 
     @property
     def filepath(self):
+        """The directory and filename combined."""
         return self._filepath
 
     def get_setting_section(self, key):
@@ -102,6 +109,8 @@ class Ini(object):
         self[key] = [section, self[key]]
 
     def load(self):
+        """Read the .ini file.
+        """
         with open(self._filepath, 'rt') as ini_file:
             current_section = None
             for line in ini_file:
@@ -116,6 +125,8 @@ class Ini(object):
                 self[line[0]] = [current_section, line[1]]
 
     def save(self):
+        """Write the .ini file.
+        """
         with open(self._filepath, 'wt') as ini_file:
             for key in self._settings:
                 if self.get_setting_section(key) is None:
