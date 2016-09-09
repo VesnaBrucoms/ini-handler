@@ -74,14 +74,17 @@ class Ini(object):
 
     @property
     def filename(self):
+        """The .ini filename (no extension)."""
         return self._filename
 
     @property
     def directory(self):
+        """The path to which the .ini file will be written to (no filename)."""
         return self._directory
 
     @property
     def filepath(self):
+        """The directory and filename combined."""
         return self._filepath
 
     def get_setting_section(self, key):

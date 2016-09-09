@@ -26,6 +26,6 @@ Just like that we have created and retrieved a new setting!
 
 ## Testing
 
-To run the unit tests (with vbini.py as an example):
+You can use invoke to run the unit tests by typing the following:
 
-    python tests\unit-tests\test_vbini.py -v
+    invoke run_unit_tests

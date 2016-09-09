@@ -3,6 +3,10 @@ from ini_handler.utilities import validate_key_type
 
 
 class Sections(object):
+    """Sections()
+
+    Handles the creation, modification, and deletion of the file sections.
+    """
 
     def __init__(self):
         self._sections = {}
@@ -40,6 +44,12 @@ class Sections(object):
         return str(self._sections)
 
     def remove_setting(self, key, value):
+        """Removes a setting key from the given section.
+
+        Args:
+            key(str):       the section key
+            value(str):     the setting key
+        """
         if value is not None:
             self._sections[key].remove(value)
 
