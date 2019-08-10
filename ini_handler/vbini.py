@@ -15,7 +15,7 @@ class Ini(object):
     Stores all settings and sections; handles all loading and saving.
     """
 
-    def __init__(self, filename='settings', directory=None):
+    def __init__(self, filename='settings', directory=None, comment_chars=["#", ";"]):
         self._settings = {}
         self._sections = Sections()
 
@@ -32,6 +32,8 @@ class Ini(object):
             self._directory = directory
 
         self._filepath = self._join_path()
+
+        self.comment_chars = comment_chars
 
     def __delitem__(self, key):
         validate_key_type(key)
@@ -118,6 +120,8 @@ class Ini(object):
                     continue
                 if line.startswith('[') and line[:-1].endswith(']'):
                     current_section = line[1:-2]
+                    continue
+                if line.strip()[0] in self.comment_chars:
                     continue
 
                 line = line[:-1].split('=')
